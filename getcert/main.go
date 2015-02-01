@@ -11,20 +11,26 @@ import (
 )
 
 func main() {
-	if len(os.Args) != 2 {
-		fmt.Fprintf(os.Stderr, "USAGE: env MIT_USER= MIT_ID= MIT_PASSWORD= %s skfile\n", os.Args[0])
-		os.Exit(2)
-	}
 	username := os.Getenv("MIT_USER")
 	mitid := os.Getenv("MIT_ID")
 	password := os.Getenv("MIT_PASSWORD")
-	skBytes, err := ioutil.ReadFile(os.Args[1])
+	if len(os.Args) != 2 || username == "" || mitid == "" || password == "" {
+		fmt.Fprintf(os.Stderr, "USAGE: env MIT_USER= MIT_ID= MIT_PASSWORD= %s skfile\n", os.Args[0])
+		os.Exit(2)
+	}
+	skPEMBytes, err := ioutil.ReadFile(os.Args[1])
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to read secret key: %s\n", err)
 		os.Exit(3)
 	}
 
-	sk, err := mit.ParsePrivateKey(skBytes)
+	skPEM, remainder := pem.Decode(skPEMBytes)
+	if len(remainder) != 0 {
+		fmt.Fprintf(os.Stderr, "secret key must be a single PEM block (%d bytes left over)", len(remainder))
+		os.Exit(3)
+	}
+
+	sk, err := mit.ParsePrivateKey(skPEM.Bytes)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to parse secret key: %s\n", err)
 		os.Exit(3)

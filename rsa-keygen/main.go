@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
+	"encoding/pem"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -26,7 +27,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err := ioutil.WriteFile(skfile, x509.MarshalPKCS1PrivateKey(sk), 0600); err != nil {
+	if err := ioutil.WriteFile(skfile, pem.EncodeToMemory(&pem.Block{Type: "RSA PRIVATE KEY", Bytes: x509.MarshalPKCS1PrivateKey(sk)}), 0600); err != nil {
 		fmt.Fprintf(os.Stderr, "writing output: %s\n", err)
 		os.Exit(1)
 	}
