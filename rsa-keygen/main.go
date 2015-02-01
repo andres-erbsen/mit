@@ -21,7 +21,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "%s already exists\n", skfile)
 		os.Exit(1)
 	}
-	sk, err := rsa.GenerateKey(rand.Reader, 4096)
+	sk, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err)
 		os.Exit(1)
