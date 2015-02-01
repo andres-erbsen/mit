@@ -15,7 +15,7 @@ func TestTouchstoneLogin(t *testing.T) {
 		t.Fatal(err)
 	}
 	c := NewClient(cert)
-	if err := TouchstoneLogin(c, "https://edu-apps.mit.edu/ose-rpt/?Search+Online+Reports=Search+Subject+Evaluation+Reports"); err != nil {
+	if err := TouchstoneLogin(c, "https://edu-apps.mit.edu/ose-rpt/subjectEvaluationSearch.htm?termId=&departmentId=&subjectCode=5.111&instructorName=&search=Search"); err != nil {
 		t.Fatal(err)
 	}
 }

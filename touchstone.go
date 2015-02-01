@@ -2,7 +2,6 @@ package mit
 
 import (
 	"crypto/tls"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
@@ -49,10 +48,9 @@ func TouchstoneLogin(c *http.Client, dst string) error {
 	})
 
 	resp, err = c.PostForm("https://edu-apps.mit.edu/Shibboleth.sso/SAML2/POST", url.Values{"SAMLResponse": {SAMLResponse}, "RelayState": {RelayState}})
-	rr, err := ioutil.ReadAll(resp.Body)
+	_, err = ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}
-	fmt.Println(string(rr))
 	return err
 }
