@@ -52,8 +52,13 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		for kk, vv := range mm {
-			fmt.Fprintf(w, "%s\t | %s\t | %s\n", k, kk, vv)
+		kks := make([]string, 0, len(m))
+		for kk := range mm {
+			kks = append(kks, kk)
+		}
+		sort.Strings(kks)
+		for _, kk := range kks {
+			fmt.Fprintf(w, "%s\t | %s\t | %s\n", k, kk, mm[kk])
 		}
 		fmt.Fprintf(w, "\n")
 	}
